@@ -14,18 +14,19 @@ activities <- read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/activity
 
 subject_train<-read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
 subject_test<-read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
-subjects<-rbind(subject_train,subject_test)
 
 x_train<-read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/train/X_train.txt", col.names = features$functions)
 x_test<-read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/test/X_test.txt", col.names = features$functions)
-x <- rbind(x_train, x_test)
 
 
 y_train<-read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/train/y_train.txt", col.names = "code")
 y_test<-read.table("C:/Users/danas/Downloads/data/UCI HAR Dataset/test/y_test.txt", col.names = "code")
-y<-rbind(y_train,y_test)
 
 # 1.  Merges the training and the test sets to create one data set.
+
+subjects<-rbind(subject_train,subject_test)
+x <- rbind(x_train, x_test)
+y<-rbind(y_train,y_test)
 
 merged<-cbind(subjects,y,x)
 
@@ -40,7 +41,7 @@ data$code <- activities[data$code, 2]
 
 # 4. Appropriately labels the data set with descriptive variable names.
 
-data1 <- data %>%
+data <- data %>%
         rename(activity=code) %>%
         rename_with(~gsub("Acc.","_Accelerometer_",.)) %>%
         rename_with(~gsub("Gyro.","_Gyroscope_",.))%>%
@@ -57,7 +58,7 @@ data1 <- data %>%
 
 # 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-data.final<- data1 %>%
+data.final<- data %>%
         group_by(activity,subject) %>%
         summarize_all(funs(mean))
 
