@@ -1,0 +1,50 @@
+run_analysis.R script performs the data preparation as described in the course project’s definition.
+
+# define url and choose destination
+the url is downloaded and assigned a destination zip file called "data.zip"
+
+# download zip and extract
+file is unzipped into a filder called "data"
+
+# read files into tables and bind
+all files are read and assigned an object:
+- features<- features.txt: 561 rows, 2 cols. features are derived from accelerometer and gyroscope
+- activities <- activity_labels.txt: 6 rows, 2 cols. codes for 6 different activities performed (walking, walking upstairs etc.)
+- subject_test <- test/subject_test.txt : 2947 rows, 1 col. subjects id no. for 9 volunteers
+- subjects_train <-test/subject_train.txt : 7352 rows, 1 col. subjects id no. for 21 volunteers 
+- x_test <- test/X_test.txt : 2947 rows, 561 cols. all features listed in "features" for all 9 test subjects
+- y_test <- test/y_test.txt : 2947 rows, 1 cols. activity codes for the records in x_test
+- x_train <- test/X_train.txt : 7352 rows, 561 cols. all features listed in "features" for all 21 train subjects
+- y_train <- test/y_train.txt : 7352 rows, 1 cols. activity codes for the records in x_train
+
+# 1.  Merges the training and the test sets to create one data set.
+- subjects is creating by row binding subjects_test and subjects_train: 10299 rows, 561 cols
+- x is created by row binding x_test and x_train: 10299 rows, 561 cols
+- y is created by row binding y-test and y_train: 10299 rows, 1 col
+- merged in created by column binding subjects, x, and y: 10299 rows, 563cols
+
+# 2. Extracts only the measurements on the mean and standard deviation for each measurement. 
+data is created by subsetting "merged" and selecting only the subjects and code columns, and columns containing the words "mean" or "std": 10299 rows, 88 cols
+
+# 3. Uses descriptive activity names to name the activities in the data set
+code column in "data" is replaced with corresponding activity name from "activities" 2nd column
+
+# 4. Appropriately labels the data set with descriptive variable names.
+features were renamed across the dataset: 
+- code converted to acvtivity
+- Acc converted to Accelerometer
+- Gyro converted to Gyroscope
+- BodyBody converted to Body
+- Mag converted to Magnitude
+- angle converted to Angle
+- start with t converted to Time
+- strart with f converted to Frequency
+- tBody converted to TimeBody
+- mean converted to Mean
+- std converted to STD
+- gravity converted to Gravity
+
+# 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+data.final created by summarizing the mean for each variable, grouped by subject and activity: 180 rows, 88 cols   
+
+this file was then exported as data.final.txt
